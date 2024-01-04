@@ -3,7 +3,7 @@ import "./App.css";
 import playerImage from "./player.png";
 import io from "socket.io-client";
 
-const socket = io("http://localhost:3001");
+const socket = io(process.env.REACT_APP_SERVER_ADDRESS);
 
 function App() {
   const [players, setPlayers] = useState([]);
