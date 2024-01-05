@@ -15,25 +15,31 @@ function App() {
     // Emit newPlayer event when the component mounts
     socket.emit("newPlayer", { id: socket.id, x: 0, y: 0 });
 
-    const updatePlayersListener = (playerNewPositions) => {
+    const updatePlayersListener = (playerNewPositions, playerTrigger) => {
+      console.log(messages);
       setPlayers(playerNewPositions);
+
+      if (playerTrigger?.id in messages) {
+        setMessages((prevMessages) => ({
+          ...prevMessages,
+          [playerTrigger.id]: {
+            ...prevMessages[playerTrigger.id],
+            x: playerTrigger.x,
+            y: playerTrigger.y,
+          },
+        }));
+      }
     };
 
-    const messageSentListener = (newMessage) => {
-      setMessages((prevMessages) => ({
-        ...prevMessages,
-        [newMessage.id]: {
-          ...newMessage,
-          timestamp: Date.now(), // Adding a timestamp as a unique key
-        },
-      }));
-      setTimeout(() => {
-        setMessages((prevMessages) => {
-          const updatedMessages = { ...prevMessages };
-          delete updatedMessages[newMessage.id];
-          return updatedMessages;
-        });
-      }, 5000);
+    const messageSentListener = (newMessages) => {
+      setMessages(newMessages);
+      // setTimeout(() => {
+      //   setMessages((prevMessages) => {
+      //     const updatedMessages = { ...prevMessages };
+      //     delete updatedMessages[newMessage.id];
+      //     return updatedMessages;
+      //   });
+      // }, 3500);
     };
 
     socket.on("updatePlayers", updatePlayersListener);
@@ -42,11 +48,7 @@ function App() {
       socket.off("updatePlayers", updatePlayersListener);
       socket.off("messageSent", messageSentListener);
     };
-  }, []);
-
-  useEffect(() => {
-    console.log(messages);
-  }, [messages]);
+  });
 
   const handleMouseClick = (event) => {
     const offsetXAdjustment = -65; // Adjust as needed
@@ -65,12 +67,24 @@ function App() {
 
   const sendChatMessage = (event) => {
     const targetType = event.target.tagName;
+
     if (
       targetType === "BUTTON" ||
       (targetType === "INPUT" && event.key === "Enter")
     ) {
-      const newMessage = { id: socket.id, message: chatInput };
-      socket.emit("sendMessage", messages, socket.id, newMessage);
+      const playerIndex = players.findIndex(
+        (player) => player.id === socket.id
+      );
+      socket.emit(
+        "sendMessage",
+        messages,
+        {
+          id: socket.id,
+          x: players[playerIndex].x,
+          y: players[playerIndex].y,
+        },
+        chatInput
+      );
       setChatInput("");
     }
   };
@@ -90,12 +104,15 @@ function App() {
               }}
             />
             {messages[player.id] && (
-              <MessageBubble
-                message={messages[player.id].message}
-                x={messages[player.id].x}
-                y={messages[player.id].y}
-                key={messages[player.id].timestamp}
-              />
+              <div>
+                <MessageBubble
+                  className="character"
+                  message={messages[player.id].message}
+                  x={messages[player.id].x}
+                  y={messages[player.id].y}
+                  // key={messages[player.id].timestamp}
+                />
+              </div>
             )}
           </div>
         ))}

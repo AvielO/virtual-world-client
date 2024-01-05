@@ -9,4 +9,7 @@
   max-width: 200px;
   word-wrap: break-word;
   z-index: 100; /* Ensure it appears above other elements */
+  display: block;
+  transform-origin: center bottom; /* Set the transform-origin to center bottom */
+  transition: transform 1s ease;
 }

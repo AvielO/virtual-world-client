@@ -23,9 +23,12 @@
   transform-origin: center bottom; /* Set the transform-origin to center bottom */
   transition: transform 1s ease;
 }
-
-/* App.css */
-
+.message-text {
+  position: absolute;
+  display: inline-block; /* or 'block', depending on your layout */
+  transition: transform 0.5s ease; /* Adjust the duration and timing function as needed */
+  /* Rest of your styling */
+}
 /* Styling for the chatbox */
 .chatbox {
   position: fixed;
