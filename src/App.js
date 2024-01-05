@@ -10,7 +10,6 @@ function App() {
   const [players, setPlayers] = useState([]);
   const [chatInput, setChatInput] = useState("");
   const [messages, setMessages] = useState({});
-  const [currentMessage, setCurrentMessage] = useState(null);
 
   useEffect(() => {
     // Emit newPlayer event when the component mounts
@@ -21,10 +20,19 @@ function App() {
     };
 
     const messageSentListener = (newMessage) => {
-      setCurrentMessage(newMessage);
-
+      setMessages((prevMessages) => ({
+        ...prevMessages,
+        [newMessage.id]: {
+          ...newMessage,
+          timestamp: Date.now(), // Adding a timestamp as a unique key
+        },
+      }));
       setTimeout(() => {
-        setCurrentMessage(null);
+        setMessages((prevMessages) => {
+          const updatedMessages = { ...prevMessages };
+          delete updatedMessages[newMessage.id];
+          return updatedMessages;
+        });
       }, 5000);
     };
 
@@ -35,6 +43,10 @@ function App() {
       socket.off("messageSent", messageSentListener);
     };
   }, []);
+
+  useEffect(() => {
+    console.log(messages);
+  }, [messages]);
 
   const handleMouseClick = (event) => {
     const offsetXAdjustment = -65; // Adjust as needed
@@ -58,11 +70,8 @@ function App() {
       (targetType === "INPUT" && event.key === "Enter")
     ) {
       const newMessage = { id: socket.id, message: chatInput };
-      setMessages({ ...messages, [socket.id]: newMessage });
+      socket.emit("sendMessage", messages, socket.id, newMessage);
       setChatInput("");
-
-      // Optionally emit this message to the server if you want other players to see it
-      socket.emit("sendMessage", newMessage);
     }
   };
 
@@ -70,22 +79,27 @@ function App() {
     <div className="App">
       <div className="world" onClick={handleMouseClick}>
         {players.map((player) => (
-          <img
-            key={player.id}
-            src={playerImage}
-            alt={`Player ${player.id}`}
-            className="character"
-            style={{
-              transform: `translate(${player.x}px, ${player.y}px)`,
-            }}
-          />
+          <div key={player.id}>
+            <img
+              key={player.id}
+              src={playerImage}
+              alt={`Player ${player.id}`}
+              className="character"
+              style={{
+                transform: `translate(${player.x}px, ${player.y}px)`,
+              }}
+            />
+            {messages[player.id] && (
+              <MessageBubble
+                message={messages[player.id].message}
+                x={messages[player.id].x}
+                y={messages[player.id].y}
+                key={messages[player.id].timestamp}
+              />
+            )}
+          </div>
         ))}
       </div>
-      <MessageBubble
-        message={currentMessage?.message}
-        x={currentMessage?.x}
-        y={currentMessage?.y}
-      />
       <div className="chatbox">
         <input
           type="text"
