@@ -1,0 +1,12 @@
+/* MessageBubble.css */
+
+.message-bubble {
+  position: absolute;
+  background-color: #f1f1f1;
+  padding: 5px 10px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  max-width: 200px;
+  word-wrap: break-word;
+  z-index: 100; /* Ensure it appears above other elements */
+}

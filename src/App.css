@@ -23,3 +23,50 @@
   transform-origin: center bottom; /* Set the transform-origin to center bottom */
   transition: transform 1s ease;
 }
+
+/* App.css */
+
+/* Styling for the chatbox */
+.chatbox {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 10px;
+}
+
+.chatbox input {
+  flex-grow: 1;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+.chatbox button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.chatbox button:hover {
+  background-color: #0056b3;
+}
+
+/* Styling for the message bubble */
+.message-bubble {
+  position: absolute;
+  background-color: #f1f1f1;
+  padding: 5px 10px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  max-width: 200px;
+  word-wrap: break-word;
+}
