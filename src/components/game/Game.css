@@ -1,0 +1,76 @@
+.world {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  border: 1px solid #000;
+  overflow: hidden;
+}
+
+/* src/App.css */
+.character {
+  position: absolute;
+  display: block;
+  width: 140px;
+  height: 210px;
+  transform-origin: center bottom;
+  transition: transform 1s ease;
+}
+.message-text {
+  position: absolute;
+  display: inline-block; /* or 'block', depending on your layout */
+  transition: transform 0.5s ease; /* Adjust the duration and timing function as needed */
+  /* Rest of your styling */
+}
+/* Styling for the chatbox */
+.chatbox {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 10px;
+}
+
+.chatbox input {
+  flex-grow: 1;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+.chatbox button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.chatbox button:hover {
+  background-color: #0056b3;
+}
+
+/* Styling for the message bubble */
+.message-bubble {
+  position: absolute;
+  background-color: #f1f1f1;
+  padding: 5px 10px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  max-width: 200px;
+  word-wrap: break-word;
+}
+.player-container {
+  position: absolute;
+  transition: transform 1s ease; /* Smooth transition for movement */
+}
+.player-username {
+  position: absolute;
+  transform: translateX(50px) translateY(200px);
+  transition: transform 1s ease;
+}
