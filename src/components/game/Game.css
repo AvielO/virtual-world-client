@@ -1,3 +1,9 @@
+.game-background {
+  background: url("./picture.png") !important; 
+  background-repeat: no-repeat !important;
+  background-size: 2250px 1125px !important;
+}
+
 .world {
   position: relative;
   width: 100%;

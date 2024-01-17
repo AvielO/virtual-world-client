@@ -61,9 +61,7 @@ function Game({ username }) {
     const mouseY = event.clientY + offsetYAdjustment;
 
     // Emit the new player position to the server
-    const playerIndex = players.findIndex(
-      (player) => player.id === socket.id
-    );
+    const playerIndex = players.findIndex((player) => player.id === socket.id);
     socket.emit("playerMoved", {
       id: socket.id,
       username: players[playerIndex].username,
@@ -102,7 +100,7 @@ function Game({ username }) {
   };
 
   return (
-    <div className="App">
+    <div className="game-background">
       <div className="world" onClick={handleMouseClick}>
         {players.map((player) => (
           <div
